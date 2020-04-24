@@ -1,384 +1,551 @@
-import xml.etree.ElementTree as ET
-import CommonFunctions
+"""This module includes Certificate-class and its methods according cei entry point"""
 
-class Certificate(object):
+import xml.etree.ElementTree as ET
+import functions
+
+class Certificate():
     """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
         Todistukseen liittyvät tiedot -osiota ja sen luontia."""
 
-    def __init__(self, contextRef = "cxt1", DiaryNumber = ""):
+    def __init__(self, context_ref="cxt1", diary_number=""):
         self.cei = ET.Element('fi-suc-cei:Certificate') #Luodaan juurielementti
-        
+        self.diary_number = diary_number
+
         #cei = self.getObjectOfManagerSCertificate(cei)
-        self.cei = self.CreateObjectOfManagerSCertificateStructure(self.cei)
+        self.cei = self.create_object_managers_certificate_structure(self.cei)
         #cei = self.getCertificateInformation(cei)
-        self.cei = self.CreateCertificateInformationStructure(self.cei, DiaryNumber)
+        self.cei = self.create_certicification_information_structure()
 
         #Lisää contextRef-tieto
-        self.cei = CommonFunctions.SetContextRef(self.cei, contextRef)
+        self.cei = functions.set_context_ref(self.cei, context_ref)
 
-    def CreateObjectOfManagerSCertificateStructure(self, RootElementTree):
-        
-        ObjectOfManagerSCertificate = ET.SubElement(RootElementTree, 'fi-suc-cei:ObjectOfManagerSCertificate')
+    def create_object_managers_certificate_structure(self, root_element_tree):
+        """This functions updated defined element tree to include required information
 
-        ShareGroupInformation = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:ShareGroupInformation')
-        ET.SubElement(ShareGroupInformation, 'fi-suc-cei:ShareGroup', attrib={
+           Keyword arguments:
+           root_element_tree               -- xml.etree.ElementTree, element tree to be updated
+
+           Output:                         -- xml.etree.ElementTree, updated element tree
+           """
+
+        object_of_managers_certificate = ET.SubElement(
+            root_element_tree,
+            'fi-suc-cei:object_of_managers_certificate')
+
+        share_group_information = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:share_group_information')
+        ET.SubElement(share_group_information, 'fi-suc-cei:ShareGroup', attrib={
             'contextRef' : ''
         })
 
-        ET.SubElement(ShareGroupInformation, 'fi-suc-cei:AmountOfShares', attrib={
+        ET.SubElement(share_group_information, 'fi-suc-cei:AmountOfShares', attrib={
             'decimals' : '0',
             'contextRef' : '',
             'unitRef' : 'pure'
         })
-        
-        ET.SubElement(ShareGroupInformation, 'fi-suc-cei:AmountOfVotes', attrib={
+
+        ET.SubElement(share_group_information, 'fi-suc-cei:AmountOfVotes', attrib={
             'decimals' : '0',
             'contextRef' : '',
             'unitRef' : 'pure'
         })
 
-        Owners = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:Owners')
-        Owner = ET.SubElement(Owners, 'fi-suc-cei:Owner')
-        
-        ET.SubElement(Owner, 'fi-suc-cei:OwnerName', attrib={
+        owners = ET.SubElement(object_of_managers_certificate, 'fi-suc-cei:owners')
+        owner = ET.SubElement(owners, 'fi-suc-cei:owner')
+
+        ET.SubElement(owner, 'fi-suc-cei:OwnerName', attrib={
             'contextRef' : ''
         })
 
-        ET.SubElement(Owner, 'fi-suc-cei:OwnerShareOfOwnership', attrib={
+        ET.SubElement(owner, 'fi-suc-cei:OwnerShareOfOwnership', attrib={
             'decimals' : '1',
             'contextRef' : '',
             'unitRef' : 'pure'
         })
 
-        ET.SubElement(Owner, 'fi-suc-cei:OwnershipHasChangedDate', attrib={
+        ET.SubElement(owner, 'fi-suc-cei:OwnershipHasChangedDate', attrib={
             'contextRef' : ''
         })
 
-        ET.SubElement(Owner, 'fi-suc-cei:OwnerRegisteredInTheShareListingDate', attrib={
+        ET.SubElement(owner, 'fi-suc-cei:OwnerRegisteredInTheShareListingDate', attrib={
             'contextRef' : ''
         })
 
-        ET.SubElement(Owner, 'fi-suc-cei:ApartmentUsageAsACommonHomeForSpouses', attrib={
+        ET.SubElement(owner, 'fi-suc-cei:ApartmentUsageAsACommonHomeForSpouses', attrib={
             'contextRef' : ''
         })
 
-        InformationRegardingTheConditionOfTheOwnerApartmentKnownByTheHousingCompany = ET.SubElement(ObjectOfManagerSCertificate,
-        'fi-suc-cei:InformationRegardingTheConditionOfTheOwnerApartmentKnownByTheHousingCompany')
+        info_of_cond_hoc = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:InformationRegardingTheCondition\
+                OfTheOwnerApartmentKnownByTheHousingCompany')
 
         ET.SubElement(
-        InformationRegardingTheConditionOfTheOwnerApartmentKnownByTheHousingCompany,
-        'fi-suc-cei:RemarkableFlawsSubjectToTheMaintenanceLiabilityOfEitherTheShareHolderOrTheHousingCompanyKnownByTheHousingCompany', attrib={
-            'contextRef' : ''
-        })
+            info_of_cond_hoc,
+            'fi-suc-cei:RemarkableFlawsSubjectToTheMaintenanceLiabilityOf\
+                EitherTheShareHolderOrTheHousingCompanyKnownByTheHousingCompany',
+            attrib={'contextRef' : ''})
 
         ET.SubElement(
-        InformationRegardingTheConditionOfTheOwnerApartmentKnownByTheHousingCompany,
-        'fi-suc-cei:InformationRegardingOtherFactorsThatMaySubstanciallyImpactTheUsageOrCostOfUsageOfTheOwnerApartmentKnownByTheHousingCompany', attrib={
-            'contextRef' : ''
-        })
-
-        ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:AgreementsAndPracticesThatDifferFromTheHousingCompanyAct', attrib={
-            'contextRef' : ''
-        })
-
-        MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompany = ET.SubElement(ObjectOfManagerSCertificate, 
-        'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompany')
+            info_of_cond_hoc,
+            'fi-suc-cei:InformationRegardingOtherFactorsThatMaySubstancially\
+                ImpactTheUsageOrCostOfUsageOfTheOwnerApartmentKnownByTheHousingCompany',
+            attrib={'contextRef' : ''})
 
         ET.SubElement(
-        MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompany, 
-        'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompanyDescription', attrib={
-           'contextRef' : ''
-        })
+            object_of_managers_certificate,
+            'fi-suc-cei:AgreementsAndPracticesThatDifferFromTheHousingCompanyAct',
+            attrib={'contextRef' : ''})
+
+        maintenance_and_alter_known_by_hoc = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:MaintenanceAndAlterationWorkDoneByThe\
+                ShareHolderKnownByTheHousingCompany')
 
         ET.SubElement(
-        MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompany,
-        'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolderKnownByTheHousingCompanyYearOfCompletion', attrib={
-            'decimals' : '0',
-            'contextRef' : '',
-            'unitRef' : 'pure'
-        })
+            maintenance_and_alter_known_by_hoc,
+            'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolder\
+                KnownByTheHousingCompanyDescription',
+            attrib={'contextRef' : ''})
 
-        PosessionRightsAuthorizedByTheShareGroup = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:PosessionRightsAuthorizedByTheShareGroup')
-        PosessionRightsAuthorizedByTheShareGroupDetails = ET.SubElement(PosessionRightsAuthorizedByTheShareGroup, 'fi-suc-cei:PosessionRightsAuthorizedByTheShareGroupDetails')
+        ET.SubElement(
+            maintenance_and_alter_known_by_hoc,
+            'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolderKnown\
+                ByTheHousingCompanyYearOfCompletion',
+            attrib={
+                'decimals' : '0',
+                'contextRef' : '',
+                'unitRef' : 'pure'
+                }
+            )
 
-        ET.SubElement(PosessionRightsAuthorizedByTheShareGroupDetails, 'fi-suc-cei:SpaceIdentifierReference', attrib={
-            'contextRef' : ''
-        })
-        ET.SubElement(PosessionRightsAuthorizedByTheShareGroupDetails, 'fi-suc-cei:ApartmentRoomNumberAnnouncedByTheShareHolder', attrib={
-            'decimals' : '0',
-            'contextRef' : '',
-            'unitRef' : 'pure'
-        })
+        pos_rights_authorized_by_sg = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:PosessionRightsAuthorizedByTheShareGroup'
+            )
+        pos_rights_authorized_by_sg_det = ET.SubElement(
+            pos_rights_authorized_by_sg,
+            'fi-suc-cei:PosessionRightsAuthorizedByTheShareGroupDetails'
+            )
 
-        ET.SubElement(PosessionRightsAuthorizedByTheShareGroupDetails, 'fi-suc-cei:SpaceType', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            pos_rights_authorized_by_sg_det,
+            'fi-suc-cei:SpaceIdentifierReference',
+            attrib={'contextRef' : ''}
+            )
 
-        PosessionLimitationsOnTheShareGroupOwnership = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:PosessionLimitationsOnTheShareGroupOwnership')
-        ET.SubElement(PosessionLimitationsOnTheShareGroupOwnership, 'fi-suc-cei:PosessionRightOfAWidow', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            pos_rights_authorized_by_sg_det,
+            'fi-suc-cei:ApartmentRoomNumberAnnouncedByTheShareHolder',
+            attrib={
+                'decimals' : '0',
+                'contextRef' : '',
+                'unitRef' : 'pure'
+                }
+            )
 
-        ET.SubElement(PosessionLimitationsOnTheShareGroupOwnership, 'fi-suc-cei:PosessionLimitationOther', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            pos_rights_authorized_by_sg_det,
+            'fi-suc-cei:SpaceType',
+            attrib={'contextRef' : ''}
+            )
 
-        PosessionLimitationsOnTheApartmentPosessionRight = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:PosessionLimitationsOnTheApartmentPosessionRight')
-        ET.SubElement(PosessionLimitationsOnTheApartmentPosessionRight,
-        'fi-suc-cei:PosessionLimitationsRelatedToShareGroupOrApartmentPosessionRightsMarkedInTheSharesListing', attrib={
-            'contextRef' : ''
-        })
+        pos_limitation_on_the_ownership = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:PosessionLimitationsOnTheShareGroupOwnership'
+            )
+        ET.SubElement(
+            pos_limitation_on_the_ownership,
+            'fi-suc-cei:PosessionRightOfAWidow',
+            attrib={'contextRef' : ''}
+            )
 
-        HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration = ET.SubElement(ObjectOfManagerSCertificate,
-        'fi-suc-cei:HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration')
-        
-        ET.SubElement(HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration,
-        'fi-suc-cei:AnnualGeneralMeetingHasDecidedUponTheApartmentPosessionTaking', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            pos_limitation_on_the_ownership,
+            'fi-suc-cei:PosessionLimitationOther',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration,
-        'fi-suc-cei:PosessionStartingDate', attrib={
-            'contextRef' : ''
-        })
+        pos_limitation_on_the_apartment_pos_right = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:PosessionLimitationsOnTheApartmentPosessionRight'
+            )
 
-        ET.SubElement(HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration,
-        'fi-suc-cei:PosessionEndingDate', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            pos_limitation_on_the_apartment_pos_right,
+            'fi-suc-cei:PosessionLimitationsRelatedToShareGroupOrApartment\
+                PosessionRightsMarkedInTheSharesListing',
+            attrib={'contextRef' : ''})
 
-        ET.SubElement(HousingCompanyDecisionOnThePosessionTakingOfTheApartmentAndPosessionDuration,
-        'fi-suc-cei:HousingCompanyHasLeasedThePosessionTakenApartment', attrib={
-            'contextRef' : ''
-        })
+        hoc_dec_on_pos_taking_and_duration = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:HousingCompanyDecisionOnThePosession\
+                TakingOfTheApartmentAndPosessionDuration'
+            )
 
-        ChargesAndCompensationsForTheApartment = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:ChargesAndCompensationsForTheApartment')
-        ChargesAndCompensationsForTheApartmentDetails = ET.SubElement(ChargesAndCompensationsForTheApartment, 'fi-suc-cei:ChargesAndCompensationsForTheApartmentDetails')
+        ET.SubElement(
+            hoc_dec_on_pos_taking_and_duration,
+            'fi-suc-cei:AnnualGeneralMeetingHasDecidedUponTheApartmentPosessionTaking',
+            attrib={'contextRef' : ''})
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails, 'fi-suc-cei:ChargeOrCompensationType', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            hoc_dec_on_pos_taking_and_duration,
+            'fi-suc-cei:PosessionStartingDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails, 'fi-suc-cei:ChargeOrCompensationTypeName', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            hoc_dec_on_pos_taking_and_duration,
+            'fi-suc-cei:PosessionEndingDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails, 'fi-suc-cei:UnitPrice', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            hoc_dec_on_pos_taking_and_duration,
+            'fi-suc-cei:HousingCompanyHasLeasedThePosessionTakenApartment',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails, 'fi-suc-cei:ChargeOrCompensationBasis', attrib={
-            'contextRef' : ''
-        })
+        charges_and_compensations = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:ChargesAndCompensationsForTheApartment'
+            )
+        charges_and_compensations_details = ET.SubElement(
+            charges_and_compensations,
+            'fi-suc-cei:ChargesAndCompensationsForTheApartmentDetails'
+            )
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails, 'fi-suc-cei:TimeUnit', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:ChargeOrCompensationType',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ChargesAndCompensationsForTheApartmentDetails,
-        'fi-suc-cei:TotalAggregatedAmountForTheChargeOrCompensationType', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:ChargeOrCompensationTypeName',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:ApartmentIsRegisteredAsVat-Liable', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:UnitPrice',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ShareholderSOverdueUnpaidChargesForCommonExpenses = ET.SubElement(ObjectOfManagerSCertificate,
-        'fi-suc-cei:ShareholderSOverdueUnpaidChargesForCommonExpenses')
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:ChargeOrCompensationBasis',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:OverdueChargesForCommonExpensesWithInterestTotal', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:TimeUnit',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:OverdueChargesForCommonExpensesWithInterestDate', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            charges_and_compensations_details,
+            'fi-suc-cei:TotalAggregatedAmountForTheChargeOrCompensationType',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:OverdueChargesForCommonExpensesOnSellerSResponsibilityTotal', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:ApartmentIsRegisteredAsVat-Liable',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:OverdueChargesForCommonExpensesOnSellerSResponsibilityDate', attrib={
-            'contextRef' : ''
-        })
+        shh_overdue_unpaid_chages = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:ShareholderSOverdueUnpaidChargesForCommonExpenses'
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:Collectively-ResponsibleOverdueChargesForCommonExpensesOverThePrecedingSixMonths', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:OverdueChargesForCommonExpensesWithInterestTotal',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ET.SubElement(ShareholderSOverdueUnpaidChargesForCommonExpenses,
-        'fi-suc-cei:OverdueChargesForCommonExpensesIncludeVat', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:OverdueChargesForCommonExpensesWithInterestDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ApartmentLoanShare = ET.SubElement(ObjectOfManagerSCertificate, 'fi-suc-cei:ApartmentLoanShare')
-        ApartmentLoanShareDetails = ET.SubElement(ApartmentLoanShare, 'fi-suc-cei:ApartmentLoanShareDetails')
-        
-        ET.SubElement(ApartmentLoanShareDetails, 'fi-suc-cei:ApartmentLoanName', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:OverdueChargesForCommonExpensesOnSellerSResponsibilityTotal',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ET.SubElement(ApartmentLoanShareDetails, 'fi-suc-cei:ApartmentLoanAmount', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:OverdueChargesForCommonExpensesOnSellerSResponsibilityDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ApartmentLoanShareDetails, 'fi-suc-cei:ApartmentLoanAmountDate', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:Collectively-ResponsibleOverdueChargesForCommonExpenses\
+                OverThePrecedingSixMonths',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ET.SubElement(ApartmentLoanShareDetails, 'fi-suc-cei:ApartmentLoanCharges', attrib={
-            'decimals' : '2',
-            'contextRef' : '',
-            'unitRef' : 'EUR'
-        })
+        ET.SubElement(
+            shh_overdue_unpaid_chages,
+            'fi-suc-cei:OverdueChargesForCommonExpensesIncludeVat',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(ObjectOfManagerSCertificate,
-        'fi-suc-cei:CertificateAdditionalInformation', attrib={
-            'contextRef' : ''
-        })
+        apartment_loan_share = ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:ApartmentLoanShare'
+            )
 
-        return RootElementTree
-    
-    def CreateCertificateInformationStructure(self, RootElementTree, DiaryNumber):
-        
-        CertificateInformation = ET.SubElement(RootElementTree, 'fi-suc-cei:CertificateInformation')
+        apartment_loan_share_details = ET.SubElement(
+            apartment_loan_share,
+            'fi-suc-cei:ApartmentLoanShareDetails'
+            )
 
-        DiaryNumber = ET.SubElement(CertificateInformation, 'fi-suc-cei:DiaryNumber', attrib={
-            'contextRef' : ''
-        })
-        
-        ET.SubElement(CertificateInformation, 'fi-suc-cei:CertificateDate', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            apartment_loan_share_details,
+            'fi-suc-cei:ApartmentLoanName',
+            attrib={'contextRef' : ''}
+            )
 
-        CertificateOrder = ET.SubElement(CertificateInformation, 'fi-suc-cei:CertificateOrder')
-        ET.SubElement(CertificateOrder, 'fi-suc-cei:CertificateOrderPlacedByName', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            apartment_loan_share_details,
+            'fi-suc-cei:ApartmentLoanAmount',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        ET.SubElement(CertificateOrder, 'fi-suc-cei:CertificateOrderPlacedByRole', attrib={
-            'contextRef' : ''        
-        })
+        ET.SubElement(
+            apartment_loan_share_details,
+            'fi-suc-cei:ApartmentLoanAmountDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(CertificateOrder, 'fi-suc-cei:CertificateOrderPlacedByContactDetail', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            apartment_loan_share_details,
+            'fi-suc-cei:ApartmentLoanCharges',
+            attrib={
+                'decimals' : '2',
+                'contextRef' : '',
+                'unitRef' : 'EUR'
+                }
+            )
 
-        CertificateProvider = ET.SubElement(CertificateInformation, 'fi-suc-cei:CertificateProvider')
-        ET.SubElement(CertificateProvider, 'fi-suc-cei:CertificateProviderName', attrib={
-            'context' : ''
-        })
+        ET.SubElement(
+            object_of_managers_certificate,
+            'fi-suc-cei:CertificateAdditionalInformation',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(CertificateProvider, 'fi-suc-cei:CertificateProviderRole', attrib={
-            'contextRef' : ''
-        })
+        return root_element_tree
 
-        ET.SubElement(CertificateProvider, 'fi-suc-cei:CertificateProviderContactDetail', attrib={
-            'contextRef' : ''
-        })
+    def create_certicification_information_structure(self):
+        """This method creates certification information structure"""
 
-        ET.SubElement(CertificateProvider, 'fi-suc-cei:CertificateProviderOrganization', attrib={
-            'contextRef' : ''
-        })
+        certificate_information = ET.SubElement(
+            self.cei,
+            'fi-suc-cei:CertificateInformation'
+            )
 
-        ET.SubElement(CertificateProvider,
-        'fi-suc-cei:CertificateProviderOrganizationIdentifier', attrib={
-            'contextRef' : ''
-        })
+        diary_number = ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:DiaryNumber',
+            attrib={'contextRef' : ''}
+            )
 
-        RecommendedAttachmentsToTheSuperintendentSCertificate = ET.SubElement(CertificateInformation, 'fi-suc-cei:RecommendedAttachmentsToTheSuperintendentSCertificate')
-        
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:ConfirmedFinancialStatements', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:CertificateDate',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:ReinforcedBudget', attrib={
-            'contextRef' : ''
-        })
+        certificate_order = ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:CertificateOrder'
+            )
 
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:ArticlesOfAssociation', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_order,
+            'fi-suc-cei:CertificateOrderPlacedByName',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:ActivityReport', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_order,
+            'fi-suc-cei:CertificateOrderPlacedByRole',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:AuditorSReport', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_order,
+            'fi-suc-cei:CertificateOrderPlacedByContactDetail',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(RecommendedAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:PerformanceAuditReport', attrib={
-            'contextRef' : ''
-        })
+        certificate_provider = ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:CertificateProvider'
+            )
 
-        OtherAttachmentsToTheSuperintendentSCertificate = ET.SubElement(CertificateInformation, 'fi-suc-cei:OtherAttachmentsToTheSuperintendentSCertificate')
+        ET.SubElement(
+            certificate_provider,
+            'fi-suc-cei:CertificateProviderName',
+            attrib={'context' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:FloorPlanForApartments', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_provider,
+            'fi-suc-cei:CertificateProviderRole',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:BoardOfDirectorsReportOnTheCompanySBuildingsAndPropertyMaintenanceNeeds', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_provider,
+            'fi-suc-cei:CertificateProviderContactDetail',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:SummaryOfConditionAssessment', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_provider,
+            'fi-suc-cei:CertificateProviderOrganization',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:HousingCompanySConditionCertificate', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            certificate_provider,
+            'fi-suc-cei:CertificateProviderOrganizationIdentifier',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:EnergyCertificate', attrib={
-            'contextRef' : ''
-        })
+        rec_attachements_to_the_superintendents_cert = ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:RecommendedAttachmentsToTheSuperintendentSCertificate'
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:ReportOnTheMaintenanceAndAlterationWorkDoneOnTheCompanySRealEstatePropertyAndTheYearOfCompletion', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:ConfirmedFinancialStatements',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:InformationRegardingTheAuthorizationOnIssuingShareOptionsOrOtherRightsToShares', attrib={
-            'contextRef' : ''
-        })
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:ReinforcedBudget',
+            attrib={'contextRef' : ''}
+            )
 
-        ET.SubElement(OtherAttachmentsToTheSuperintendentSCertificate,
-        'fi-suc-cei:OtherAttachments', attrib={
-            'contextRef' : ''
-        })
-        
-        return RootElementTree
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:ArticlesOfAssociation',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:ActivityReport',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:AuditorSReport',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            rec_attachements_to_the_superintendents_cert,
+            'fi-suc-cei:PerformanceAuditReport',
+            attrib={'contextRef' : ''}
+            )
+
+        other_attachments_to_the_superintendents_certificate = ET.SubElement(
+            certificate_information,
+            'fi-suc-cei:OtherAttachmentsToTheSuperintendentSCertificate'
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:FloorPlanForApartments',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:BoardOfDirectorsReportOnTheCompanySBuildingsAndPropertyMaintenanceNeeds',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:SummaryOfConditionAssessment',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:HousingCompanySConditionCertificate',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:EnergyCertificate',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:ReportOnTheMaintenanceAndAlterationWorkDoneOnTheCompanyS\
+                RealEstatePropertyAndTheYearOfCompletion',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:InformationRegardingTheAuthorizationOnIssuing\
+                ShareOptionsOrOtherRightsToShares',
+            attrib={'contextRef' : ''}
+            )
+
+        ET.SubElement(
+            other_attachments_to_the_superintendents_certificate,
+            'fi-suc-cei:OtherAttachments',
+            attrib={'contextRef' : ''}
+            )
+
+        return self.cei
+
 
 
 
