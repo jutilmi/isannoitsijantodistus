@@ -7,26 +7,35 @@ class Certificate():
     """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
         Todistukseen liittyvät tiedot -osiota ja sen luontia."""
 
-    def __init__(self, context_ref="cxt1", diary_number=""):
+    def __init__(self, context_ref="ctx1"):
         """Initializing certificate
 
             Keyword arguments:
             context_ref             -- str, reference context identifier on elements
-            diary_number            -- str, diary number with which the certificate is stored
             """
 
-        self.cei = ET.Element('fi-suc-cei:Certificate') #Luodaan juurielementti
-        self.diary_number = diary_number
-
-        #cei = self.getObjectOfManagerSCertificate(cei)
-        self.create_object_managers_certificate_structure()
-        #cei = self.getCertificateInformation(cei)
-        self.create_certicification_information_structure()
+         #Luodaan juurielementti
+        self.cei = ET.Element('fi-suc-cei:Certificate')
+        self.__cei_elements(self.cei)
 
         #Lisää contextRef-tieto
-        functions.set_context_ref(self.cei, context_ref)
+        self.cei = functions.set_context_ref(self.cei, context_ref)
 
-    def create_object_managers_certificate_structure(self):
+    def __cei_elements(self, parent_element):
+
+        sub_elements = {
+            'ObjectOfManagerSCertificate' : 'ObjectOfManagerSCertificateItemType',
+            'CertificateInformation' : 'CertificateInformationItemType'
+            }
+
+        for key in sub_elements:
+            sub_element = ET.SubElement(parent_element, 'fi-suc-cei:'+key)
+            if sub_element.tag == 'fi-suc-cei:ObjectOfManagerSCertificate':
+                self.__object_managers_certificate_struct(sub_element)
+            elif sub_element.tag == 'fi-suc-cei:CertificateInformation':
+                self.__cert_info_struct(sub_element)
+
+    def __object_managers_certificate_struct(self, parent_element):
         """This functions updated defined element tree to include required information
 
            Keyword arguments:
@@ -36,7 +45,7 @@ class Certificate():
            """
 
         object_of_managers_certificate = ET.SubElement(
-            self.cei,
+            parent_element,
             'fi-suc-cei:object_of_managers_certificate')
 
         share_group_information = ET.SubElement(
@@ -375,11 +384,11 @@ class Certificate():
             attrib={'contextRef' : ''}
             )
 
-    def create_certicification_information_structure(self):
+    def __cert_info_struct(self, parent_element):
         """This method creates certification information structure"""
 
         certificate_information = ET.SubElement(
-            self.cei,
+            parent_element,
             'fi-suc-cei:CertificateInformation'
             )
 
@@ -550,19 +559,3 @@ class Certificate():
             )
 
         return self.cei
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #def __init__(self):

@@ -1,139 +1,147 @@
-import xml.etree.ElementTree as ET
-import CommonFunctions
+"""This module includes ServiceProvidesAndAdministration-class and
+   its methods according cei entry point"""
 
-class ServiceProvidersAndAdministration(object):
+import xml.etree.ElementTree as ET
+import functions
+
+class ServiceProvidersAndAdministration:
     """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
         Yhtiön palvelunttuottajat ja hallinto -osioita ja sen luontia."""
 
-    def __init__(self, contextRef = "cxt1"):
+    def __init__(self, contextRef="ctx1"):
         """Tämän funktion argumentti xbrl on tyyppiä etree.ElementTree
-            palauttaa täytetyn saman polun"""
-        self.spa = ET.Element('TheCompanySServiceProvidersAndAdministration') #Luodaan juurielementti
-        
-        self.spa = self.buildSPAInformation(self.spa)
+            palauttaa täytetyn saman polun
 
-        self.spa = CommonFunctions.SetContextRef(self.spa, contextRef)
-    
-    def buildSPAInformation(self, RootElementTree):
+            Keyword arguments:
+            context_ref             -- str, reference context identifier on elements
+            """
+        # Creating root element for xml document
+        self.spa = ET.Element('fi-suc-spa:TheCompanySServiceProvidersAndAdministration')
+        self.__spa_elements(self.spa)
 
-        SubElements = {
+        self.spa = functions.set_context_ref(self.spa, contextRef)
+
+    def __spa_elements(self, parent_element):
+
+        sub_elements = {
             'RealEstatePropertyManagement' : 'RealEstatePropertyManagementItemType',
             'SuperintendentPersonalDetails' : 'SuperintendentPersonalDetailsItemType',
-            'RealEstateManagementOrganizationDetails' : 'RealEstateManagementOrganizationDetailsItemType',
+            'RealEstateManagementOrganizationDetails' :
+                'RealEstateManagementOrganizationDetailsItemType',
             'Administration' : 'AdministrationItemType'
-        }
+            }
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+        for key in sub_elements:
+            sub_element = ET.SubElement(parent_element, 'fi-suc-spa:'+key)
+            if sub_element.tag == 'fi-suc-spa:RealEstatePropertyManagement':
+                self.__real_estate_property_management_it(sub_element)
+            elif sub_element.tag == 'fi-suc-spa:SuperintendentPersonalDetails':
+                self.__superintendets_personal_details_it(sub_element)
+            elif sub_element.tag == 'fi-suc-spa:RealEstateManagementOrganizationDetails':
+                self.__real_estate_managment_org_dets_it(sub_element)
+            elif sub_element.tag == 'fi-suc-spa:Administration':
+                self.__administration_it(sub_element)
 
-        return RootElementTree
+#        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
+    def __real_estate_property_management_it(self, parent_element):
 
-    def RealEstatePropertyManagementItemType(self, RootElementTree):
-
-        SubElements = {
+        sub_elements = {
             'PropertyManagementApproach' : 'stringItemType',
             'PropertyManagementApproachAddiionalDetail' : 'stringItemType',
             'PropertyManagementProvider' : 'PropertyManagementProviderItemType'
         }
 
-        SubElement = ET.SubElement(RootElementTree, 'fi-suc-spa'+'PropertyManagementProvider')
-        self.PropertyManagementProviderItemType(SubElement)
+        sub_elements.pop('PropertyManagementProvider')
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-        SubElements.pop('PropertyManagementProvider')
+        sub_element = ET.SubElement(parent_element, 'fi-suc-spa:PropertyManagementProvider')
+        self.__property_management_provider_it(sub_element)
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+    def __property_management_provider_it(self, parent_element):
 
-        return RootElementTree
-
-    def PropertyManagementProviderItemType(self, RootElementTree):
-
-        SubElements = {
+        sub_elements = {
             'PropertyManagementProviderContactName' : 'stringItemType',
             'PropertyManagementProviderAddress' : 'PropertyManagementProviderAddressItemType',
             'PropertyManagementProviderPhoneNumber' : 'stringItemType',
             'PropertyManagementProviderEmail' : 'stringItemType'
         }
-        
-        SubElement = ET.SubElement(RootElementTree, 'fi-suc-spa:'+'PropertyManagementProviderAddress')
-        self.PropertyManagementProviderAddressItemType(SubElement)
 
-        SubElements.pop('PropertyManagementProviderAddress')
+        sub_element = ET.SubElement(
+            parent_element,
+            'fi-suc-spa:PropertyManagementProviderAddress')
+        self.__property_management_provider_address_it(sub_element)
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+        sub_elements.pop('PropertyManagementProviderAddress')
 
-        return RootElementTree
-    
-    def PropertyManagementProviderAddressItemType(self, RootElementTree):
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-        SubElements = {
+    def __property_management_provider_address_it(self, parent_element):
+
+        sub_elements = {
             'PropertyManagementProviderStreetAddress' : 'stringItemType',
             'PropertyManagementProviderPostalCode' : 'stringItemType',
             'PropertyManagementProviderCity' : 'stringItemType',
-            'PropertyManagementProviderCountry' : 'stringItemType'                                   
+            'PropertyManagementProviderCountry' : 'stringItemType'
         }
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-        return RootElementTree
+    def __superintendets_personal_details_it(self, parent_element):
 
-    def SuperintendentPersonalDetailsItemType(self, RootElementTree):
-
-        SubElements = {
+        sub_elements = {
             'SuperintendentName' : 'stringItemType',
             'SuperintendentQualificationCertificate' : 'stringItemType',
             'SuperintendentPhoneNumber' : 'stringItemType',
             'SuperintendentEmail' : 'stringItemType',
-            'SuperintendentAuthorizationIsa' : 'booleanItemType'                                                
+            'SuperintendentAuthorizationIsa' : 'booleanItemType'
         }
-   
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
 
-        return RootElementTree
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-    def RealEstateManagementOrganizationDetailsItemType(self, RootElementTree):
+    def __real_estate_managment_org_dets_it(self, parent_element):
 
-        SubElements = {
+        sub_elements = {
             'RealEstateManagementOrganizationName' : 'stringItemType',
-            'RealEstateManagementOrganizationAddress' : 'RealEstateManagementOrganizationAddressItemType',
+            'RealEstateManagementOrganizationAddress' :
+                'RealEstateManagementOrganizationAddressItemType',
             'RealEstateManagementOrganizationOrganizationIdentifier' : 'stringItemType',
             'RealEstateManagementOrganizationAuthorizationIsa' : 'booleanItemType'
         }
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-        return RootElementTree
+        for child in parent_element:
+            if child.tag == 'fi-suc-spa:RealEstateManagementOrganizationAddress':
+                self.__real_estate_manag_org_address_it(child)
 
-    def RealEstateManagementOrganizationAddressItemType(self, RootElementTree):
+    def __real_estate_manag_org_address_it(self, parent_element):
 
-        SubElements = {
+        sub_elements = {
             'RealEstateManagementOrganizationStreetAddress' : 'stringItemType',
             'RealEstateManagementOrganizationPostalCode' : 'stringItemType',
             'RealEstateManagementOrganizationCity' : 'stringItemType',
-            'RealEstateManagementOrganizationCountry' : 'stringItemType'                                   
+            'RealEstateManagementOrganizationCountry' : 'stringItemType'
         }
 
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-        return RootElementTree        
+    def __administration_it(self, parent_element):
 
-    def AdministrationItemType(self, RootElementTree):
-
-        SubElements = {
+        sub_elements = {
             'AdministrationMember' : 'AdministrationMemberItemType'
         }
-    
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
 
-        return RootElementTree
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
 
-    def AdministrationMemberItemType(self, RootElementTree):
-        
-        SubElements = {
+        self.__administration_member_it(parent_element[0])
+
+    def __administration_member_it(self, parent_element):
+
+        sub_elements = {
             'AdministrationMemberRole' : 'stringItemType',
             'AdministrationMemberName' : 'stringItemType',
-            'AdministrationMemberContactDetail' : 'stringItemType'                        
+            'AdministrationMemberContactDetail' : 'stringItemType'
         }
-    
-        CommonFunctions.ElementsToElementTree(SubElements, RootElementTree, 'fi-suc-spa:')
 
-        return RootElementTree
+        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')

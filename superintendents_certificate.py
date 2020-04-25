@@ -1,4 +1,4 @@
-"""This module includes HousingCompanyCertificate class
+"""This module includes class for superintendents certificate
 representing certificate for a specific apartment
 """
 
@@ -7,16 +7,21 @@ from hoc import HousingCompany
 from cei import Certificate
 from spa import ServiceProvidersAndAdministration
 
-class HousingCompanyCertificate(object):
+class SuperintendentsCertificate:
     """Form a housing company certificate."""
 
-    def __init__(self, apartment_id,
-                 housing_company_database_settings = None,
-                 base_housing_company_certificate = None):
+    def __init__(self,
+                 apartment_id,
+                 diary_number,
+                 housing_company_database_settings=None,
+                 base_housing_company_certificate=None,
+                 context_ref="cxt1",
+                 ):
         """Initializes housing company certificate.
 
         Keyword arguments:
-        apartment_number                  -- int, apartment id number
+        apartment_id                      -- int, apartment id number
+        diary_number                      -- str, diary number of the superintendets certificate
         housing_company_database_settings -- dict, database settings
             {'Database' : str, path to satabase }
         base_housing_company_certificate  -- dict, static data of an housing company
@@ -26,13 +31,13 @@ class HousingCompanyCertificate(object):
                 'TheCompanySServiceProvidersAndAdministration' : {}
                 }
         """
+        self.context_ref = context_ref
         self.apartment_id = apartment_id
-        self.housing_company = HousingCompany()
-        self.certificate = Certificate()
-        self.service_providers_and_administration = ServiceProvidersAndAdministration()
-
-        #housing_company_certificate = ET.Element('HousingCompanyCertificate')
-        #housing_company_certificate_etree = ET.ElementTree(housing_company_certificate)
+        self.diary_number = diary_number
+        self.housing_company = HousingCompany(self.context_ref)
+        self.certificate = Certificate(self.context_ref, self.diary_number)
+        self.service_providers_and_administration =\
+            ServiceProvidersAndAdministration(self.context_ref)
 
     def print_certificate(self):
         """This function prints the certificate in Word format"""

@@ -19,7 +19,7 @@ def set_context_ref(root_element, context_ref=None):
 
     return root_element
 
-def elements_to_element_tree(element_dict, root_element_tree, xml_definator):
+def elements_to_element_tree(element_dict, parent_element, xml_definator):
     """This functions sets contextRef as an xml_definator to relevant elements in a tree.
 
        Keyword arguments:
@@ -34,27 +34,43 @@ def elements_to_element_tree(element_dict, root_element_tree, xml_definator):
     if xml_definator[-1] != ':':
         xml_definator += ':'
 
-    for key in element_dict.keys():
+    for key in element_dict:
         if element_dict[key] == 'stringItemType' or \
             element_dict[key] == 'booleanItemType' or \
             element_dict[key] == 'dateItemType' or \
             element_dict[key] == 'integerItemType':
-            ET.SubElement(root_element_tree, xml_definator+key, attrib={
-                'contextRef' : ''
-            })
-        elif element_dict[key] == 'decimalItemType':
-            ET.SubElement(root_element_tree, xml_definator+key, attrib={
-                'decimals' : '2',
-                'contextRef' : '',
-                'unitRef' : 'pure'
-            })
-        elif element_dict[key] == 'monetaryItemType':
-            ET.SubElement(root_element_tree, xml_definator+key, attrib={
-                'decimals' : '2',
-                'contextRef' : '',
-                'unitRef' : 'EUR'
-            })
-        else:
-            ET.SubElement(root_element_tree, xml_definator+key)
 
-    return root_element_tree
+            ET.SubElement(
+                parent_element,
+                xml_definator+key,
+                attrib={
+                    'contextRef' : ''
+                    }
+                )
+
+        elif element_dict[key] == 'decimalItemType':
+            ET.SubElement(
+                parent_element,
+                xml_definator+key,
+                attrib={
+                    'decimals' : '2',
+                    'contextRef' : '',
+                    'unitRef' : 'pure'
+                    }
+                )
+
+        elif element_dict[key] == 'monetaryItemType':
+            ET.SubElement(
+                parent_element,
+                xml_definator+key,
+                attrib={
+                    'decimals' : '2',
+                    'contextRef' : '',
+                    'unitRef' : 'EUR'
+                    }
+                )
+
+        else:
+            ET.SubElement(parent_element, xml_definator+key)
+
+    return parent_element
