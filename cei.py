@@ -8,18 +8,25 @@ class Certificate():
         Todistukseen liittyvät tiedot -osiota ja sen luontia."""
 
     def __init__(self, context_ref="cxt1", diary_number=""):
+        """Initializing certificate
+
+            Keyword arguments:
+            context_ref             -- str, reference context identifier on elements
+            diary_number            -- str, diary number with which the certificate is stored
+            """
+
         self.cei = ET.Element('fi-suc-cei:Certificate') #Luodaan juurielementti
         self.diary_number = diary_number
 
         #cei = self.getObjectOfManagerSCertificate(cei)
-        self.cei = self.create_object_managers_certificate_structure(self.cei)
+        self.create_object_managers_certificate_structure()
         #cei = self.getCertificateInformation(cei)
-        self.cei = self.create_certicification_information_structure()
+        self.create_certicification_information_structure()
 
         #Lisää contextRef-tieto
-        self.cei = functions.set_context_ref(self.cei, context_ref)
+        functions.set_context_ref(self.cei, context_ref)
 
-    def create_object_managers_certificate_structure(self, root_element_tree):
+    def create_object_managers_certificate_structure(self):
         """This functions updated defined element tree to include required information
 
            Keyword arguments:
@@ -29,7 +36,7 @@ class Certificate():
            """
 
         object_of_managers_certificate = ET.SubElement(
-            root_element_tree,
+            self.cei,
             'fi-suc-cei:object_of_managers_certificate')
 
         share_group_information = ET.SubElement(
@@ -367,8 +374,6 @@ class Certificate():
             'fi-suc-cei:CertificateAdditionalInformation',
             attrib={'contextRef' : ''}
             )
-
-        return root_element_tree
 
     def create_certicification_information_structure(self):
         """This method creates certification information structure"""
