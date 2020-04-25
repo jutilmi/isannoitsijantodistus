@@ -35,7 +35,7 @@ class SuperintendentsCertificate:
         self.apartment_id = apartment_id
         self.diary_number = diary_number
         self.housing_company = HousingCompany(self.context_ref)
-        self.certificate = Certificate(self.context_ref, self.diary_number)
+        self.certificate = Certificate(self.context_ref)
         self.service_providers_and_administration =\
             ServiceProvidersAndAdministration(self.context_ref)
 

@@ -1,16 +1,21 @@
-"""This module consists of database connections procedures to
-   various databases
-"""
+"""This module includes database class and its methods and other
+   database related funcions for various database types.
+   """
 
 import sqlite3
 import mysql.connector
 import pyodbc
 
 class Database():
-    """This class has query connections to database"""
+    """This class is for database initialization and queries."""
 
-    def __init__(self, database, database_type, host='localhost', username=None, password=None):
-        """This function initializes connection to server and database
+    def __init__(self, database: str, database_type: str,
+                 host='localhost', username=None, password=None):
+        """This function initializes connection to server and database.
+
+           After initializing, connection to database is created with Database.connect(), and
+           queried with Database.query(sql_string, *args). Output for query is fetch all. Close
+           connection to database with Database.close().
 
            Keyword arguments:
            database                -- str, name of the database
@@ -28,18 +33,12 @@ class Database():
         self.conn = None
         self.cursor = None
 
-    def connect_database(self):
-        """Module creates a connection to a database and
-           performs SQL query and closes the connection
-
-           Keyword arguments:
-           database                  -- str, path to database file or server
-           database_type             -- str, ACCESS/SQLite/MySQL
-           """
+    def connect(self):
+        """Method creates a connection to a database according to initialized parameters."""
 
         if self.database_type == 'ACCESS':
             conn_str = (
-                r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
+                r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};'
                 r'DBQ=' + self.database + ';'
                 )
             self.conn = pyodbc.connect(conn_str)
@@ -53,32 +52,29 @@ class Database():
                 database=self.database
                 )
 
-    def query(self, sql_string):
-        """Module creates connection, performs SQL query and closes the connection
+    def query(self, sql_string: str, *args):
+        """Method executes sql query.
 
            Keyword arguments:
            SQL_STRING                -- str, SQL query phrase
+           args                      -- tuple, arguments for SQL query
 
            Returns:
            SQL result                -- list
-        """
+           """
 
         if self.cursor is None:
             try:
                 self.cursor = self.conn.cursor()
             except ConnectionError:
-                self.connect_database()
+                self.connect()
                 self.cursor = self.conn.cursor()
-        self.cursor.execute(sql_string)
+        self.cursor.execute(sql_string, *args)
 
         return self.cursor.fetchall()
 
-    def close_connection(self):
-        """This function closes database connection
-
-           Keyword arguments:
-           connection                -- pyodbc.connect or sqlite3.connect
-        """
+    def close(self):
+        """This function closes database connection."""
 
         if self.conn is not None:
             self.conn.close()
