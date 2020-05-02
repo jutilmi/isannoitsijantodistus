@@ -42,11 +42,12 @@ class MeritAktiva():
         response = requests.get(
             url=url,
             json=True,
-            headers={
-                'content-type': 'application/json'
-            },
+            headers={'content-type': 'application/json'},
             data=json_request
             )
+
+        # Returning Python object
+        response = json.loads(response.json())
 
         return response
 

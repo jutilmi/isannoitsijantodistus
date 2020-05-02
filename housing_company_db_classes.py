@@ -1,12 +1,11 @@
 """This module includes database class and its methods and other
    database related funcions for various database types.
    """
-
 import sqlite3
 import mysql.connector
 import pyodbc
 
-class Database():
+class SQL():
     """This class is for database initialization and queries."""
 
     def __init__(self, database: str, database_type: str,
