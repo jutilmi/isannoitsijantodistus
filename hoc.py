@@ -16,7 +16,7 @@ class HousingCompany:
             """
         # Creating root element for xml document
         self.hoc = ET.Element('fi-suc-hoc:HousingCompany')
-        self.__hoc_elements(self.hoc)
+        self.__hoc_elements()
 
         # Creating element for dictionary
         # self.hoc_dict = {'fi-suc-hoc:HousingCompany' : {}}
@@ -27,7 +27,7 @@ class HousingCompany:
 
 #    def HousingCompany(self, vHousingCompany)
 
-    def __hoc_elements(self, parent_element):
+    def __hoc_elements(self):
         """Subelements in housing company parent module"""
 
         sub_elements = {
@@ -45,26 +45,28 @@ class HousingCompany:
             'OtherSpacesInControlOfTheHousingCompanyItemType'
         }
 
-        for key in sub_elements:
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
-            if sub_element.tag == 'fi-suc-hoc:HousingCompanyInfromationItemType':
+        for key, value in sub_elements.items():
+            sub_element = ET.SubElement(self.hoc, 'fi-suc-hoc:'+key)
+            if value == 'HousingCompanyInfromationItemType':
                 self.__hoc_information_item_type(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:PrintingOfSharesItemType':
+            elif value == 'PrintingOfSharesItemType':
                 self.__printing_of_shares_item_type(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:SpacesStatedInTheArticlesOfAssociation':
+            elif value == 'SpacesStatedInTheArticlesOfAssociationItemType':
                 self.__spaces_stated_in_the_articles_of_association_item_type(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:OtherObligations':
+            elif value == 'OtherObligationsItemType':
                 self.__other_obligations_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:PosessionDistributionAgreements':
+            elif value == 'PosessionDistributionAgreementsItemType':
                 self.__posession_distr_agreements_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:Insurances':
-                self.__printing_of_shares_item_type(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:RealEstate':
-                self.__spaces_stated_in_the_articles_of_association_item_type(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:Buildings':
-                self.__other_obligations_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:OtherSpacesInControlOfTheHousingCompany':
-                self.__posession_distr_agreements_it(sub_element)
+            elif value == 'InsurancesItemType':
+                self.__insurances_it(sub_element)
+            elif value == 'FinancialInformationItemType':
+                self.__financial_information_it(sub_element)
+            elif value == 'RealEstateItemType':
+                self.__real_estate_it(sub_element)
+            elif value == 'BuildingsItemType':
+                self.__buildings_it(sub_element)
+            elif value == 'OtherSpacesInControlOfTheHousingCompanyItemType':
+                self.__other_spaces_in_control_of_hoc(sub_element)
 
     def __hoc_information_item_type(self, parent_element):
         """Builds HousingCompanyInformation section in hoc entrypoint"""
@@ -175,12 +177,12 @@ class HousingCompany:
             'SpacesStatedInTheArticlesOfAssociationInPosessionOfTheHousingCompanyItemType'
         }
 
-        for key in sub_elements:
+        for key, value in sub_elements.items():
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
-            if sub_element.tag == 'fi-suc-hoc:SpacesStatedInTheArticlesOfAssociation\
+            if value == 'SpacesStatedInTheArticlesOfAssociation\
                 InPosessionOfTheShareHoldersItemType':
                 self.__spaces_stated_in_art_of_ass_in_pos_of_shareholder_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:SpacesStatedInTheArticlesOfAssociationIn\
+            elif value == 'SpacesStatedInTheArticlesOfAssociationIn\
                 PosessionOfTheHousingCompanyItemType':
                 self.__spaces_stated_in_art_of_ass_in_pos_of_hoc_it(sub_element)
 
@@ -297,19 +299,19 @@ class HousingCompany:
         sub_elements = {
             'ChargesAndCompensations' : 'ChargesAndCompensationsItemType',
             'TakenLoansGrantedLoanDecisionsAndCreditentialAccounts' :
-            'TakenLoansGrantedLoanDecisionsAndCreditentialAccountsItemType',
+                'TakenLoansGrantedLoanDecisionsAndCreditentialAccountsItemType',
             'ComplaintActionRegardingTheReasonablingOfTheArticlesOfAssociation' :
-            'ComplaintActionRegardingTheReasonablingOfTheArticlesOfAssociationItemType'
-        }
+                'ComplaintActionRegardingTheReasonablingOfTheArticlesOfAssociationItemType'
+            }
 
-        for key in sub_elements:
+        for key, value in sub_elements.items():
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
-            if sub_element.tag == 'fi-suc-hoc:ChargesAndCompensationsItemType':
+            if value == 'ChargesAndCompensationsItemType':
                 self.__charges_and_compensations_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:TakenLoansGrantedLoanDecisionsAnd\
+            elif value == 'TakenLoansGrantedLoanDecisionsAnd\
                 CreditentialAccountsItemType':
                 self.__taken_and_granted_loans_and_credit_accs_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:ComplaintActionRegardingTheReasonabling\
+            elif value == 'ComplaintActionRegardingTheReasonabling\
                 OfTheArticlesOfAssociationItemType':
                 self.__complaint_act_reg_reasonabling_of_artass_it(
                     sub_element)
@@ -543,11 +545,11 @@ class HousingCompany:
             'OtherSpaces' : 'OtherSpacesItemType'
             }
 
-        for key in sub_elements:
+        for key, value in sub_elements.items():
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
-            if sub_element.tag == 'fi-suc-hoc:ParkingSpacesItemType':
+            if value == 'ParkingSpacesItemType':
                 self.__parking_spaces_it(sub_element)
-            elif sub_element.tag == 'fi-suc-hoc:OtherSpacesItemType':
+            elif value == 'OtherSpacesItemType':
                 self.__other_spaces_it(sub_element)
 
     def __parking_spaces_it(self, parent_element):
