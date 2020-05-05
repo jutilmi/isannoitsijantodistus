@@ -91,13 +91,13 @@ class HousingCompany:
             'InformationRegardingTheAuthorizationOnIssuingShareOptionsOrOtherRightsToShares' :
             'stringItemType',
             'InformationRegardingOtherKnownFactsThatMayHaveASignificantImpactOnTheCompanyS\
-                FinancialPositionOrOperations' :
+FinancialPositionOrOperations' :
             'stringItemType',
             'InformationRegardingUndrawnLoansThatTheOwnerApartmentWillBeLiableForAndForWhich\
-                TheLoanSharePerOwnerApartmentIsNotKnown' :
+TheLoanSharePerOwnerApartmentIsNotKnown' :
             'stringItemType',
             'ArticlesOfAssociationAndDecisionsOfTheAnnualGeneralMeetingOnTheMaintenanceLiability\
-                AndTheShareholderSRightToMakeAlterations' :
+AndTheShareholderSRightToMakeAlterations' :
             'stringItemType',
             'ReportOnMaintenanceNeedsInformation' : 'ReportOnMaintenanceNeedsInformationItemType',
             'ReportOnMaintenanceNeeds' : 'ReportOnMaintenanceNeedsItemType',
@@ -180,10 +180,10 @@ class HousingCompany:
         for key, value in sub_elements.items():
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
             if value == 'SpacesStatedInTheArticlesOfAssociation\
-                InPosessionOfTheShareHoldersItemType':
+InPosessionOfTheShareHoldersItemType':
                 self.__spaces_stated_in_art_of_ass_in_pos_of_shareholder_it(sub_element)
             elif value == 'SpacesStatedInTheArticlesOfAssociationIn\
-                PosessionOfTheHousingCompanyItemType':
+PosessionOfTheHousingCompanyItemType':
                 self.__spaces_stated_in_art_of_ass_in_pos_of_hoc_it(sub_element)
 
     def __spaces_stated_in_art_of_ass_in_pos_of_shareholder_it(
@@ -309,10 +309,10 @@ class HousingCompany:
             if value == 'ChargesAndCompensationsItemType':
                 self.__charges_and_compensations_it(sub_element)
             elif value == 'TakenLoansGrantedLoanDecisionsAnd\
-                CreditentialAccountsItemType':
+CreditentialAccountsItemType':
                 self.__taken_and_granted_loans_and_credit_accs_it(sub_element)
             elif value == 'ComplaintActionRegardingTheReasonabling\
-                OfTheArticlesOfAssociationItemType':
+OfTheArticlesOfAssociationItemType':
                 self.__complaint_act_reg_reasonabling_of_artass_it(
                     sub_element)
 
@@ -366,7 +366,7 @@ class HousingCompany:
             'LoanSubjectToTransferTax' : 'stringItemType',
             'LoanRestrictionsOnPaymentsAndRepayments' : 'stringItemType',
             'DisclosureOfLiabilitiesIfTheCompanySLoansAre\
-                SubjectToVariousShareholders' : 'stringItemType'
+SubjectToVariousShareholders' : 'stringItemType'
         }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')

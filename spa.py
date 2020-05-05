@@ -1,27 +1,26 @@
-"""This module includes ServiceProvidesAndAdministration-class and
+"""Module includes ServiceProvidesAndAdministration-class and
    its methods according cei entry point"""
 
 import xml.etree.ElementTree as ET
 import functions
 
 class ServiceProvidersAndAdministration:
-    """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
-        Yhtiön palvelunttuottajat ja hallinto -osioita ja sen luontia."""
+    """Luokka vastaa isännöitsijäntodistuksen taksonometriassa
+        Yhtiön palveluntuottajat ja hallinto -osioita ja sen luontia."""
 
     def __init__(self, contextRef="ctx1"):
-        """Tämän funktion argumentti xbrl on tyyppiä etree.ElementTree
-            palauttaa täytetyn saman polun
+        """Funktion argumentti xbrl on tyyppiä etree.ElementTree
 
             Keyword arguments:
             context_ref             -- str, reference context identifier on elements
             """
         # Creating root element for xml document
         self.spa = ET.Element('fi-suc-spa:TheCompanySServiceProvidersAndAdministration')
-        self.__spa_elements(self.spa)
+        self.__spa_elements()
 
         self.spa = functions.set_context_ref(self.spa, contextRef)
 
-    def __spa_elements(self, parent_element):
+    def __spa_elements(self):
 
         sub_elements = {
             'RealEstatePropertyManagement' : 'RealEstatePropertyManagementItemType',
@@ -31,15 +30,15 @@ class ServiceProvidersAndAdministration:
             'Administration' : 'AdministrationItemType'
             }
 
-        for key in sub_elements:
-            sub_element = ET.SubElement(parent_element, 'fi-suc-spa:'+key)
-            if sub_element.tag == 'fi-suc-spa:RealEstatePropertyManagement':
+        for key, value in sub_elements.items():
+            sub_element = ET.SubElement(self.spa, 'fi-suc-spa:'+key)
+            if value == 'RealEstatePropertyManagementItemType':
                 self.__real_estate_property_management_it(sub_element)
-            elif sub_element.tag == 'fi-suc-spa:SuperintendentPersonalDetails':
+            elif value == 'SuperintendentPersonalDetailsItemType':
                 self.__superintendets_personal_details_it(sub_element)
-            elif sub_element.tag == 'fi-suc-spa:RealEstateManagementOrganizationDetails':
+            elif value == 'RealEstateManagementOrganizationDetailsItemType':
                 self.__real_estate_managment_org_dets_it(sub_element)
-            elif sub_element.tag == 'fi-suc-spa:Administration':
+            elif value == 'AdministrationItemType':
                 self.__administration_it(sub_element)
 
 #        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')

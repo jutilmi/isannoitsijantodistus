@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import functions
 
 class Certificate():
-    """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
+    """Luokka vastaa isännöitsijäntodistuksen taksonometriassa
         Todistukseen liittyvät tiedot -osiota ja sen luontia."""
 
     def __init__(self, context_ref="ctx1"):
@@ -16,30 +16,30 @@ class Certificate():
 
          #Luodaan juurielementti
         self.cei = ET.Element('fi-suc-cei:Certificate')
-        self.__cei_elements(self.cei)
+        self.__cei_elements()
 
         #Lisää contextRef-tieto
         self.cei = functions.set_context_ref(self.cei, context_ref)
 
-    def __cei_elements(self, parent_element):
+    def __cei_elements(self):
 
         sub_elements = {
             'ObjectOfManagerSCertificate' : 'ObjectOfManagerSCertificateItemType',
             'CertificateInformation' : 'CertificateInformationItemType'
             }
 
-        for key in sub_elements:
-            sub_element = ET.SubElement(parent_element, 'fi-suc-cei:'+key)
-            if sub_element.tag == 'fi-suc-cei:ObjectOfManagerSCertificate':
+        for key, value in sub_elements.items():
+            sub_element = ET.SubElement(self.cei, 'fi-suc-cei:'+key)
+            if value == 'ObjectOfManagerSCertificateItemType':
                 self.__object_managers_certificate_struct(sub_element)
-            elif sub_element.tag == 'fi-suc-cei:CertificateInformation':
+            elif value == 'CertificateInformationItemType':
                 self.__cert_info_struct(sub_element)
 
     def __object_managers_certificate_struct(self, parent_element):
-        """This functions updated defined element tree to include required information
+        """Function updates defined element tree to include required information
 
            Keyword arguments:
-           root_element_tree               -- xml.etree.ElementTree, element tree to be updated
+           parent_element                  -- xml.etree.ElementTree, element tree to be updated
 
            Output:                         -- xml.etree.ElementTree, updated element tree
            """
@@ -95,18 +95,18 @@ class Certificate():
         info_of_cond_hoc = ET.SubElement(
             object_of_managers_certificate,
             'fi-suc-cei:InformationRegardingTheCondition\
-                OfTheOwnerApartmentKnownByTheHousingCompany')
+OfTheOwnerApartmentKnownByTheHousingCompany')
 
         ET.SubElement(
             info_of_cond_hoc,
             'fi-suc-cei:RemarkableFlawsSubjectToTheMaintenanceLiabilityOf\
-                EitherTheShareHolderOrTheHousingCompanyKnownByTheHousingCompany',
+EitherTheShareHolderOrTheHousingCompanyKnownByTheHousingCompany',
             attrib={'contextRef' : ''})
 
         ET.SubElement(
             info_of_cond_hoc,
             'fi-suc-cei:InformationRegardingOtherFactorsThatMaySubstancially\
-                ImpactTheUsageOrCostOfUsageOfTheOwnerApartmentKnownByTheHousingCompany',
+ImpactTheUsageOrCostOfUsageOfTheOwnerApartmentKnownByTheHousingCompany',
             attrib={'contextRef' : ''})
 
         ET.SubElement(
@@ -117,18 +117,18 @@ class Certificate():
         maintenance_and_alter_known_by_hoc = ET.SubElement(
             object_of_managers_certificate,
             'fi-suc-cei:MaintenanceAndAlterationWorkDoneByThe\
-                ShareHolderKnownByTheHousingCompany')
+ShareHolderKnownByTheHousingCompany')
 
         ET.SubElement(
             maintenance_and_alter_known_by_hoc,
             'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolder\
-                KnownByTheHousingCompanyDescription',
+KnownByTheHousingCompanyDescription',
             attrib={'contextRef' : ''})
 
         ET.SubElement(
             maintenance_and_alter_known_by_hoc,
             'fi-suc-cei:MaintenanceAndAlterationWorkDoneByTheShareHolderKnown\
-                ByTheHousingCompanyYearOfCompletion',
+ByTheHousingCompanyYearOfCompletion',
             attrib={
                 'decimals' : '0',
                 'contextRef' : '',
@@ -191,13 +191,13 @@ class Certificate():
         ET.SubElement(
             pos_limitation_on_the_apartment_pos_right,
             'fi-suc-cei:PosessionLimitationsRelatedToShareGroupOrApartment\
-                PosessionRightsMarkedInTheSharesListing',
+PosessionRightsMarkedInTheSharesListing',
             attrib={'contextRef' : ''})
 
         hoc_dec_on_pos_taking_and_duration = ET.SubElement(
             object_of_managers_certificate,
             'fi-suc-cei:HousingCompanyDecisionOnThePosession\
-                TakingOfTheApartmentAndPosessionDuration'
+TakingOfTheApartmentAndPosessionDuration'
             )
 
         ET.SubElement(
@@ -322,7 +322,7 @@ class Certificate():
         ET.SubElement(
             shh_overdue_unpaid_chages,
             'fi-suc-cei:Collectively-ResponsibleOverdueChargesForCommonExpenses\
-                OverThePrecedingSixMonths',
+OverThePrecedingSixMonths',
             attrib={
                 'decimals' : '2',
                 'contextRef' : '',
@@ -541,14 +541,14 @@ class Certificate():
         ET.SubElement(
             other_attachments_to_the_superintendents_certificate,
             'fi-suc-cei:ReportOnTheMaintenanceAndAlterationWorkDoneOnTheCompanyS\
-                RealEstatePropertyAndTheYearOfCompletion',
+RealEstatePropertyAndTheYearOfCompletion',
             attrib={'contextRef' : ''}
             )
 
         ET.SubElement(
             other_attachments_to_the_superintendents_certificate,
             'fi-suc-cei:InformationRegardingTheAuthorizationOnIssuing\
-                ShareOptionsOrOtherRightsToShares',
+ShareOptionsOrOtherRightsToShares',
             attrib={'contextRef' : ''}
             )
 
@@ -557,5 +557,3 @@ class Certificate():
             'fi-suc-cei:OtherAttachments',
             attrib={'contextRef' : ''}
             )
-
-        return self.cei
