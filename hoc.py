@@ -104,7 +104,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'CompletedModernisationAndRemarkableRepairWork' :
             'CompletedModernisationAndRemarkableRepairWorkItemType',
             'AssessmentOfCondition' : 'AssessmentOfConditionItemType'
-        }
+            }
 
         parent_element = functions.elements_to_element_tree(
             sub_elements,
@@ -137,7 +137,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'ReportOnMaintenanceNeedsExplanation' : 'stringItemType',
             'ReportOnMaintenanceNeedsDraftedInTheYear' : 'integerItemType',
             'ReportOnMaintenanceNeedsDraftedForPeriodInYears' : 'decimalItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -146,7 +146,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'CompletedModernisationAndRemarkableRepairWorkExplanation' : 'stringItemType',
             'CompletedModernisationAndRemarkableRepairWorkStatus' : 'stringItemType',
             'CompletedModernisationAndRemarkableRepairWorkYear' : 'integerItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -154,7 +154,7 @@ AndTheShareholderSRightToMakeAlterations' :
         sub_elements = {
             'LatestAssessmentOfConditionYear' : 'integerItemType',
             'AssessmentOfConditionDescription' : 'stringItemType',
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -164,7 +164,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'PrintingOfSharesDoneInSecurityPrinting' : 'booleanItemType',
             'SecurityPrintingAdditionalDetail' : 'stringItemType',
             'ApartmentLayoutDescriptionHasBeenChangedAfterTheFirstOfJuly1972' : 'booleanItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -175,7 +175,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'SpacesStatedInTheArticlesOfAssociationInPosessionOfTheShareHoldersItemType',
             'SpacesStatedInTheArticlesOfAssociationInPosessionOfTheHousingCompany' :
             'SpacesStatedInTheArticlesOfAssociationInPosessionOfTheHousingCompanyItemType'
-        }
+            }
 
         for key, value in sub_elements.items():
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
@@ -208,7 +208,7 @@ PosessionOfTheHousingCompanyItemType':
             'AllSpacesInShareHoldersPosessionTotalAmount' : 'integerItemType',
             'AllSpacesInShareHoldersPosessionTotalSurfaceArea' : 'decimalItemType',
             'AllSpacesInShareHoldersPosessionTotalShares' : 'integerItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -232,7 +232,7 @@ PosessionOfTheHousingCompanyItemType':
             'BuildingsInHousingCompanySPosessionAmount' : 'integerItemType',
 
             'CourtyardSurfaceArea' : 'integerItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -241,7 +241,7 @@ PosessionOfTheHousingCompanyItemType':
         sub_elements = {
             'ObligationOnParkingSpacesByTheBuildingPermit' : 'integerItemType',
             'RulesOnParkingSpaceDistribution' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -249,7 +249,7 @@ PosessionOfTheHousingCompanyItemType':
 
         sub_elements = {
             'PosessionDistributionAgreement' : 'PosessionDistributionAgreementItemType'
-        }
+            }
 
         for key in sub_elements:
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
@@ -262,7 +262,7 @@ PosessionOfTheHousingCompanyItemType':
             'Owner' : 'OwnerItemType',
             'AgreementDocumentNumber' : 'stringItemType',
             'TermsOfAgreement' : 'stringItemType'
-        }
+            }
 
         sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'Owner')
         self.__owner_it(sub_element)
@@ -275,7 +275,7 @@ PosessionOfTheHousingCompanyItemType':
         sub_elements = {
             'OwnerName' : 'stringItemType',
             'Share' : 'decimalItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -330,7 +330,7 @@ OfTheArticlesOfAssociationItemType':
             'ChargeBasis' : 'stringItemType',
             'ChargeTimeUnit' : 'stringItemType',
             'ChargeAdditionalDetail' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -339,7 +339,7 @@ OfTheArticlesOfAssociationItemType':
         sub_elements = {
             'Loan' : 'LoanItemType',
             'CredentialAccount' : 'CredentialAccountItemType'
-        }
+            }
 
         for key in sub_elements:
             sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
@@ -367,7 +367,7 @@ OfTheArticlesOfAssociationItemType':
             'LoanRestrictionsOnPaymentsAndRepayments' : 'stringItemType',
             'DisclosureOfLiabilitiesIfTheCompanySLoansAre\
 SubjectToVariousShareholders' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -379,7 +379,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'CreditAmount' : 'monetaryItemType',
             'CreditDate' : 'dateItemType',
             'CreditLimitMount' : 'monetaryItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -388,7 +388,8 @@ SubjectToVariousShareholders' : 'stringItemType'
         sub_elements = {
             'ComplaintRegardingParagraphInTheArticlesOfAssociation' : 'stringItemType',
             'ComplaintExplanation' : 'stringItemType'
-        }
+            }
+        
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
     def __real_estate_it(self, parent_element):
@@ -407,7 +408,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'RealEstateShareOwned' : 'decimalItemType',
             'BuildingRightsSurfaceArea' : 'decimalItemType',
             'RemainingShareOfBuildingRights' : 'decimalItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -426,7 +427,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'InformationRegardingTheUsageOfTheRedemptionRight' : 'booleanItemType',
             'LeaseRevisionBaseIndex' : 'stringItemType',
             'LeasedPlotOtherInformation' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -457,7 +458,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'EnergyConsumptionPerEnergySource' : 'EnergyConsumptionPerEnergySourceItemType',
             'ConsumptionOfWater' : 'decimalItemType',
             'Apartments' : 'ApartmentsItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -468,7 +469,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'BuildingPostalCode' : 'stringItemType',
             'BuildingCity' : 'stringItemType',
             'BuildingCountry' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -478,7 +479,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'MainBuildingMaterial' : 'stringItemType',
             'RoofType' : 'stringItemType',
             'Cover' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -490,7 +491,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'CoolingSystem' : 'stringItemType',
             'InformationSystems' : 'stringItemType',
             'AntennaSystems' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -500,7 +501,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'ConsumptionOfHeat' : 'decimalItemType',
             'EnergySource' : 'stringItemType',
             'ConsumptionOfElectricityCommonSpace' : 'decimalItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -524,7 +525,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'PurposeOfUsageByBuildingPermit' : 'stringItemType',
             'RedemptionInformation' : 'stringItemType',
             'ApartmentAdditionalInformation' : 'stringItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -534,7 +535,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'SurfaceArea' : 'decimalItemType',
             'SurfaceAreaMeasurementMethod' : 'stringItemType',
             'SurfaceAreaCheckMeasured' : 'booleanItemType'
-        }
+            }
 
         functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
 
@@ -579,8 +580,7 @@ SubjectToVariousShareholders' : 'stringItemType'
         'ApartmentsCountInShareholdersPossession' :
         '''SELECT Count(Apartments.Huoneisto) AS CountOfHuoneisto
            FROM Apartments
-           HAVING (Apartments.ShareholdersPossession)=True;
-           ''',
+           HAVING (Apartments.ShareholdersPossession)=True;''',
         'ResidentialApartmentsTotalArea' :
         '''SELECT Sum(Apartments.SurfaceAreaByTheArticlesOfAssociation) AS TotalArea
            FROM Apartments;''',
