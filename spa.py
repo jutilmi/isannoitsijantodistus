@@ -8,14 +8,16 @@ class ServiceProvidersAndAdministration:
     """Luokka vastaa isännöitsijäntodistuksen taksonometriassa
         Yhtiön palveluntuottajat ja hallinto -osioita ja sen luontia."""
 
-    def __init__(self, contextRef="ctx1"):
+    def __init__(self, namespace, contextRef="ctx1"):
         """Funktion argumentti xbrl on tyyppiä etree.ElementTree
 
             Keyword arguments:
             context_ref             -- str, reference context identifier on elements
             """
         # Creating root element for xml document
-        self.spa = ET.Element('fi-suc-spa:TheCompanySServiceProvidersAndAdministration')
+        self.namespace = namespace
+
+        self.spa = ET.Element('{'+self.namespace+'}'+'TheCompanySServiceProvidersAndAdministration')
         self.__spa_elements()
 
         self.spa = functions.set_context_ref(self.spa, contextRef)
@@ -31,7 +33,7 @@ class ServiceProvidersAndAdministration:
             }
 
         for key, value in sub_elements.items():
-            sub_element = ET.SubElement(self.spa, 'fi-suc-spa:'+key)
+            sub_element = ET.SubElement(self.spa, '{'+self.namespace+'}'+key)
             if value == 'RealEstatePropertyManagementItemType':
                 self.__real_estate_property_management_it(sub_element)
             elif value == 'SuperintendentPersonalDetailsItemType':
@@ -41,7 +43,7 @@ class ServiceProvidersAndAdministration:
             elif value == 'AdministrationItemType':
                 self.__administration_it(sub_element)
 
-#        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+#        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}'')
 
     def __real_estate_property_management_it(self, parent_element):
 
@@ -52,9 +54,10 @@ class ServiceProvidersAndAdministration:
         }
 
         sub_elements.pop('PropertyManagementProvider')
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-spa:PropertyManagementProvider')
+        sub_element = ET.SubElement(parent_element,
+                                    '{'+self.namespace+'}'+'PropertyManagementProvider')
         self.__property_management_provider_it(sub_element)
 
     def __property_management_provider_it(self, parent_element):
@@ -68,12 +71,12 @@ class ServiceProvidersAndAdministration:
 
         sub_element = ET.SubElement(
             parent_element,
-            'fi-suc-spa:PropertyManagementProviderAddress')
+            '{'+self.namespace+'}'+'PropertyManagementProviderAddress')
         self.__property_management_provider_address_it(sub_element)
 
         sub_elements.pop('PropertyManagementProviderAddress')
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __property_management_provider_address_it(self, parent_element):
 
@@ -84,7 +87,7 @@ class ServiceProvidersAndAdministration:
             'PropertyManagementProviderCountry' : 'stringItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __superintendets_personal_details_it(self, parent_element):
 
@@ -96,7 +99,7 @@ class ServiceProvidersAndAdministration:
             'SuperintendentAuthorizationIsa' : 'booleanItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __real_estate_managment_org_dets_it(self, parent_element):
 
@@ -108,10 +111,10 @@ class ServiceProvidersAndAdministration:
             'RealEstateManagementOrganizationAuthorizationIsa' : 'booleanItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
         for child in parent_element:
-            if child.tag == 'fi-suc-spa:RealEstateManagementOrganizationAddress':
+            if child.tag == '{'+self.namespace+'}'+'RealEstateManagementOrganizationAddress':
                 self.__real_estate_manag_org_address_it(child)
 
     def __real_estate_manag_org_address_it(self, parent_element):
@@ -123,7 +126,7 @@ class ServiceProvidersAndAdministration:
             'RealEstateManagementOrganizationCountry' : 'stringItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __administration_it(self, parent_element):
 
@@ -131,7 +134,7 @@ class ServiceProvidersAndAdministration:
             'AdministrationMember' : 'AdministrationMemberItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
         self.__administration_member_it(parent_element[0])
 
@@ -143,4 +146,4 @@ class ServiceProvidersAndAdministration:
             'AdministrationMemberContactDetail' : 'stringItemType'
         }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-spa:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')

@@ -8,14 +8,15 @@ class HousingCompany:
     """Tämä luokka vastaa isännöitsijäntodistuksen taksonometriassa
     Taloyhtiön tiedot -osioita ja sen luontia."""
 
-    def __init__(self, contextRef="ctx1"):
+    def __init__(self, namespace, contextRef="ctx1"):
         """Initializing certificate
 
             Keyword arguments:
             context_ref             -- str, reference context identifier on elements
             """
         # Creating root element for xml document
-        self.hoc = ET.Element('fi-suc-hoc:HousingCompany')
+        self.namespace = namespace
+        self.hoc = ET.Element('{'+self.namespace+'}'+'HousingCompany')
         self.__hoc_elements()
 
         # Creating element for dictionary
@@ -46,7 +47,7 @@ class HousingCompany:
         }
 
         for key, value in sub_elements.items():
-            sub_element = ET.SubElement(self.hoc, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(self.hoc, '{'+self.namespace+'}'+key)
             if value == 'HousingCompanyInfromationItemType':
                 self.__hoc_information_item_type(sub_element)
             elif value == 'PrintingOfSharesItemType':
@@ -109,7 +110,7 @@ AndTheShareholderSRightToMakeAlterations' :
         parent_element = functions.elements_to_element_tree(
             sub_elements,
             parent_element,
-            'fi-suc-hoc:')
+            '{'+self.namespace+'}')
 
         for child in parent_element:
             if child.tag == 'fi-suc-hoc:ReportOnMaintenanceNeedsInformation':
@@ -129,7 +130,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'ReportOnMaintenanceNeedsDate' : 'dateItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __report_on_maintenance_needs_item_type(self, parent_element):
         sub_elements = {
@@ -139,7 +140,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'ReportOnMaintenanceNeedsDraftedForPeriodInYears' : 'decimalItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __complete_modernisation_and_remarkable_repairwork_item_type(self, parent_element):
         sub_elements = {
@@ -148,7 +149,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'CompletedModernisationAndRemarkableRepairWorkYear' : 'integerItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __assessment_of_condition_item_type(self, parent_element):
         sub_elements = {
@@ -156,7 +157,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'AssessmentOfConditionDescription' : 'stringItemType',
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __printing_of_shares_item_type(self, parent_element):
 
@@ -166,7 +167,7 @@ AndTheShareholderSRightToMakeAlterations' :
             'ApartmentLayoutDescriptionHasBeenChangedAfterTheFirstOfJuly1972' : 'booleanItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __spaces_stated_in_the_articles_of_association_item_type(self, parent_element):
 
@@ -178,7 +179,7 @@ AndTheShareholderSRightToMakeAlterations' :
             }
 
         for key, value in sub_elements.items():
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+key)
             if value == 'SpacesStatedInTheArticlesOfAssociation\
 InPosessionOfTheShareHoldersItemType':
                 self.__spaces_stated_in_art_of_ass_in_pos_of_shareholder_it(sub_element)
@@ -210,7 +211,7 @@ PosessionOfTheHousingCompanyItemType':
             'AllSpacesInShareHoldersPosessionTotalShares' : 'integerItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __spaces_stated_in_art_of_ass_in_pos_of_hoc_it(self, parent_element):
 
@@ -234,7 +235,7 @@ PosessionOfTheHousingCompanyItemType':
             'CourtyardSurfaceArea' : 'integerItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __other_obligations_it(self, parent_element):
 
@@ -243,7 +244,7 @@ PosessionOfTheHousingCompanyItemType':
             'RulesOnParkingSpaceDistribution' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __posession_distr_agreements_it(self, parent_element):
 
@@ -252,7 +253,7 @@ PosessionOfTheHousingCompanyItemType':
             }
 
         for key in sub_elements:
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+key)
             if sub_element.tag == 'fi-suc-hoc:PosessionDistributionAgreementItemType':
                 self.__posession_distr_agreement_it(sub_element)
 
@@ -264,11 +265,11 @@ PosessionOfTheHousingCompanyItemType':
             'TermsOfAgreement' : 'stringItemType'
             }
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'Owner')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'Owner')
         self.__owner_it(sub_element)
         sub_elements.pop('Owner')
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __owner_it(self, parent_element):
 
@@ -277,11 +278,11 @@ PosessionOfTheHousingCompanyItemType':
             'Share' : 'decimalItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __insurances_it(self, parent_element):
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'Insurance')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'Insurance')
         self.__insurance_it(sub_element)
 
     def __insurance_it(self, parent_element):
@@ -292,7 +293,7 @@ PosessionOfTheHousingCompanyItemType':
             'OtherInsurance' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __financial_information_it(self, parent_element):
 
@@ -305,7 +306,7 @@ PosessionOfTheHousingCompanyItemType':
             }
 
         for key, value in sub_elements.items():
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+key)
             if value == 'ChargesAndCompensationsItemType':
                 self.__charges_and_compensations_it(sub_element)
             elif value == 'TakenLoansGrantedLoanDecisionsAnd\
@@ -318,7 +319,7 @@ OfTheArticlesOfAssociationItemType':
 
     def __charges_and_compensations_it(self, parent_element):
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'ChargesOrCompensation')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'ChargesOrCompensation')
         self.__charge_and_compensation_it(sub_element)
 
     def __charge_and_compensation_it(self, parent_element):
@@ -332,7 +333,7 @@ OfTheArticlesOfAssociationItemType':
             'ChargeAdditionalDetail' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __taken_and_granted_loans_and_credit_accs_it(self, parent_element):
 
@@ -342,7 +343,7 @@ OfTheArticlesOfAssociationItemType':
             }
 
         for key in sub_elements:
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+key)
             if sub_element.tag == 'fi-suc-hoc:LoanItemType':
                 self.__loan_it(sub_element)
             elif sub_element.tag == 'fi-suc-hoc:CredentialAccountItemType':
@@ -369,7 +370,7 @@ OfTheArticlesOfAssociationItemType':
 SubjectToVariousShareholders' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __credential_acc_it(self, parent_element):
 
@@ -381,7 +382,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'CreditLimitMount' : 'monetaryItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __complaint_act_reg_reasonabling_of_artass_it(self, parent_element):
 
@@ -389,12 +390,12 @@ SubjectToVariousShareholders' : 'stringItemType'
             'ComplaintRegardingParagraphInTheArticlesOfAssociation' : 'stringItemType',
             'ComplaintExplanation' : 'stringItemType'
             }
-        
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __real_estate_it(self, parent_element):
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'RealEstateInformation')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'RealEstateInformation')
         self.__real_estate_information_it(sub_element)
 
     def __real_estate_information_it(self, parent_element):
@@ -410,9 +411,9 @@ SubjectToVariousShareholders' : 'stringItemType'
             'RemainingShareOfBuildingRights' : 'decimalItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'LeasedPlotInformation')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'LeasedPlotInformation')
         self.__leased_plot_info_it(sub_element)
 
     def __leased_plot_info_it(self, parent_element):
@@ -429,11 +430,11 @@ SubjectToVariousShareholders' : 'stringItemType'
             'LeasedPlotOtherInformation' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __buildings_it(self, parent_element):
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'BuildingInformation')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'BuildingInformation')
         self.__building_info_it(sub_element)
 
     def __building_info_it(self, parent_element):
@@ -460,7 +461,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'Apartments' : 'ApartmentsItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __address_it(self, parent_element):
 
@@ -471,7 +472,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'BuildingCountry' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __structures_it(self, parent_element):
 
@@ -481,7 +482,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'Cover' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __systems_it(self, parent_element):
 
@@ -493,7 +494,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'AntennaSystems' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __energy_consumption_per_e_source_it(self, parent_element):
 
@@ -503,11 +504,11 @@ SubjectToVariousShareholders' : 'stringItemType'
             'ConsumptionOfElectricityCommonSpace' : 'decimalItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __apartments_it(self, parent_element):
 
-        sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+'ApartmentInformation')
+        sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+'ApartmentInformation')
         self.__apartment_information_it(sub_element)
 
     def __apartment_information_it(self, parent_element):
@@ -527,7 +528,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'ApartmentAdditionalInformation' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __surface_area_dets_it(self, parent_element):
 
@@ -537,7 +538,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'SurfaceAreaCheckMeasured' : 'booleanItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __other_spaces_in_control_of_hoc(self, parent_element):
 
@@ -547,7 +548,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             }
 
         for key, value in sub_elements.items():
-            sub_element = ET.SubElement(parent_element, 'fi-suc-hoc:'+key)
+            sub_element = ET.SubElement(parent_element, '{'+self.namespace+'}'+key)
             if value == 'ParkingSpacesItemType':
                 self.__parking_spaces_it(sub_element)
             elif value == 'OtherSpacesItemType':
@@ -560,7 +561,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'ParkingSpaceType' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     def __other_spaces_it(self, parent_element):
 
@@ -570,7 +571,7 @@ SubjectToVariousShareholders' : 'stringItemType'
             'OtherSpaceAdditionalDetail' : 'stringItemType'
             }
 
-        functions.elements_to_element_tree(sub_elements, parent_element, 'fi-suc-hoc:')
+        functions.elements_to_element_tree(sub_elements, parent_element, '{'+self.namespace+'}')
 
     # SQL strings needed to gather required information
     SQL_STRINGS = {
